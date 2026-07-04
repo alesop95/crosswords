@@ -1,0 +1,135 @@
+:root {
+  --ink: #1a1a1a;
+  --paper: #fafafa;
+  --accent: #1a56db;
+  --active-slot: #dbeafe;
+  --cursor: #93c5fd;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  flex-wrap: wrap;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.toolbar input[type='number'] {
+  width: 3.5rem;
+  padding: 0.15rem 0.3rem;
+}
+
+.toolbar button {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.toolbar button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.toolbar button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.toolbar-sep {
+  width: 1px;
+  height: 1.4rem;
+  background: #ddd;
+}
+
+.workspace {
+  padding: 1rem;
+}
+
+.grid-root {
+  display: inline-block;
+}
+
+.grid-svg {
+  border: 2px solid var(--ink);
+  outline: none;
+  user-select: none;
+}
+
+.cell {
+  fill: #fff;
+  stroke: #555;
+  stroke-width: 1;
+}
+
+.cell-block {
+  fill: var(--ink);
+}
+
+.cell-cursor {
+  fill: var(--cursor);
+}
+
+.cell-active-slot {
+  fill: var(--active-slot);
+}
+
+.cell-number {
+  font-size: 9px;
+  fill: #333;
+  pointer-events: none;
+}
+
+.cell-letter {
+  font-size: 20px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: var(--ink);
+  pointer-events: none;
+}
+
+.hint {
+  max-width: 46rem;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.status {
+  color: var(--accent);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+}
