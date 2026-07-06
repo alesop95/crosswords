@@ -6,9 +6,16 @@ export interface Cursor {
   dir: Dir;
 }
 
+export interface CellAnnotations {
+  /** indice cella -> numero di lettere ammissibili (solo celle bianche vuote). */
+  feasibleCounts: Map<number, number>;
+}
+
 export interface AppState {
   puzzle: Puzzle;
   cursor: Cursor;
+  /** Derivato dalla propagazione sul dizionario; null finche' non caricato. */
+  annotations: CellAnnotations | null;
 }
 
 type Listener = (state: AppState) => void;
@@ -26,7 +33,13 @@ export class Store {
   private static readonly MAX_HISTORY = 200;
 
   constructor(puzzle: Puzzle) {
-    this.state = { puzzle, cursor: { row: 0, col: 0, dir: 'across' } };
+    this.state = { puzzle, cursor: { row: 0, col: 0, dir: 'across' }, annotations: null };
+  }
+
+  /** Annotazioni derivate: non entrano nella cronologia di undo. */
+  setAnnotations(annotations: CellAnnotations | null): void {
+    this.state = { ...this.state, annotations };
+    this.emit();
   }
 
   getState(): AppState {

@@ -13,6 +13,23 @@ export const t = {
   restored: 'Lavoro precedente ripristinato.',
   storageUnavailable:
     'Attenzione: localStorage non disponibile, il salvataggio automatico è disattivato.',
+  fillAll: 'Riempi griglia',
+  fillSlot: 'Riempi parola',
+  cancelFill: 'Ferma',
+  fillRunning: 'Riempimento in corso…',
+  fillDone: 'Griglia riempita.',
+  fillPartial: (n: number, m: number) => `Riempimento parziale: ${n} parole su ${m}.`,
+  fillInfeasible: 'Nessun riempimento possibile: schema troppo vincolato per il dizionario.',
+  fillCancelled: 'Riempimento fermato.',
+  fillNoWord: 'Nessuna parola compatibile per questo slot.',
+  suggestions: 'Suggerimenti',
+  dictLoading: 'Dizionario in caricamento…',
+  dictReady: 'Dizionario caricato.',
+  dictError: 'Dizionario non disponibile: suggerimenti e verifiche disattivati.',
+  noActiveSlot: 'Nessuna parola selezionata.',
+  noSuggestions: 'Nessuna parola compatibile nel dizionario.',
+  wordInDict: 'Parola presente nel dizionario.',
+  wordNotInDict: 'Parola non nel dizionario (ammessa, ma verifica la definizione).',
   helpHint:
     'Frecce: sposta il cursore. Lettere: scrivi e avanza. Invio: cambia direzione. ' +
     'Spazio o clic destro: casella nera. Backspace: cancella. Tab: slot successivo.',

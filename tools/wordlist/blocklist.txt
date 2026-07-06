@@ -1,0 +1,3 @@
+# Esclusioni manuali dalla wordlist: una parola per riga, normalizzata
+# (maiuscole senza accenti). Righe vuote e commenti # ignorati.
+# Alimentata dalla revisione umana dei riempimenti (npm run bench).

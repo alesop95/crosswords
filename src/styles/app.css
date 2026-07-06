@@ -76,12 +76,86 @@ body {
   background: #ddd;
 }
 
+.toolbar-progress {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  min-width: 3.5ch;
+}
+
 .workspace {
   padding: 1rem;
 }
 
+.editor-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
 .grid-root {
   display: inline-block;
+}
+
+.suggest-root {
+  min-width: 15rem;
+  max-width: 20rem;
+}
+
+.suggest-panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-family: ui-monospace, 'Cascadia Mono', monospace;
+}
+
+.suggest-status {
+  color: #666;
+  font-size: 0.8rem;
+  min-height: 1em;
+  margin: 0 0 0.5rem;
+}
+
+.suggest-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 26rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.suggest-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.suggest-word {
+  flex: 1;
+  text-align: left;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  font-family: ui-monospace, 'Cascadia Mono', monospace;
+  letter-spacing: 0.08em;
+}
+
+.suggest-word:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.suggest-score {
+  color: #999;
+  font-size: 0.75rem;
+  min-width: 2ch;
+  text-align: right;
 }
 
 .grid-svg {
@@ -106,6 +180,19 @@ body {
 
 .cell-active-slot {
   fill: var(--active-slot);
+}
+
+.cell-dead {
+  fill: #fecaca;
+}
+
+.cell-cursor.cell-dead,
+.cell-active-slot.cell-dead {
+  fill: #f87171;
+}
+
+.cell-tight {
+  fill: #fed7aa;
 }
 
 .cell-number {

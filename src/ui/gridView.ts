@@ -2,7 +2,7 @@ import type { AppState, Store } from './store';
 import type { Slot } from '../core/types';
 import { cellIndex, inBounds, setLetter, toggleBlock } from '../core/grid';
 import { withGrid } from '../core/puzzle';
-import { slotsByCell } from '../core/slots';
+import { activeSlot } from './activeSlot';
 
 const CELL = 36;
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -26,8 +26,8 @@ export function mountGridView(container: HTMLElement, store: Store): void {
     svg.setAttribute('height', String(grid.height * CELL));
     svg.replaceChildren();
 
-    const activeSlot = findActiveSlot(state);
-    const activeCells = new Set(activeSlot?.cellIdxs ?? []);
+    const active = activeSlot(state);
+    const activeCells = new Set(active?.cellIdxs ?? []);
     const numberByCell = startNumbers(state.puzzle.slots);
 
     for (let row = 0; row < grid.height; row++) {
@@ -45,6 +45,11 @@ export function mountGridView(container: HTMLElement, store: Store): void {
         if (cell.block) cls += ' cell-block';
         else if (row === cursor.row && col === cursor.col) cls += ' cell-cursor';
         else if (activeCells.has(idx)) cls += ' cell-active-slot';
+        if (!cell.block && !cell.letter && state.annotations) {
+          const count = state.annotations.feasibleCounts.get(idx);
+          if (count === 0) cls += ' cell-dead';
+          else if (count !== undefined && count <= 2) cls += ' cell-tight';
+        }
         rect.setAttribute('class', cls);
         g.appendChild(rect);
 
@@ -108,14 +113,7 @@ export function mountGridView(container: HTMLElement, store: Store): void {
   svg.focus();
 }
 
-function findActiveSlot(state: AppState): Slot | undefined {
-  const { puzzle, cursor } = state;
-  const idx = cellIndex(puzzle.grid, cursor.row, cursor.col);
-  const here = slotsByCell(puzzle.slots).get(idx) ?? [];
-  return here.find((s) => s.dir === cursor.dir) ?? here[0];
-}
-
-/** Numeri di partenza per cella (une sola voce per cella anche con doppio slot). */
+/** Numeri di partenza per cella (una sola voce per cella anche con doppio slot). */
 function startNumbers(slots: Slot[]): Map<number, number> {
   const map = new Map<number, number>();
   for (const slot of slots) {
@@ -174,7 +172,7 @@ function nextSlot(store: Store, delta: 1 | -1): void {
   const state = store.getState();
   const { slots } = state.puzzle;
   if (slots.length === 0) return;
-  const active = findActiveSlot(state);
+  const active = activeSlot(state);
   const pos = active ? slots.findIndex((s) => s.id === active.id) : -1;
   const next = slots[(pos + delta + slots.length) % slots.length];
   store.setCursor({ row: next.row, col: next.col, dir: next.dir });

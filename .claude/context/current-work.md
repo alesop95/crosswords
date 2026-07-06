@@ -1,11 +1,11 @@
 ---
-generated-from-commit: PENDING-FIRST-COMMIT
+generated-from-commit: c4a2172
 generated-from-branch: main
 generated-date: 2026-07-03
 covers-paths:
   - src/**
-last-verified-commit: PENDING-FIRST-COMMIT
-stato: in corso
+last-verified-commit: c4a2172
+stato: in pianificazione
 ---
 
 # Lavoro in corso
@@ -13,36 +13,41 @@ stato: in corso
 > La fonte di verità su cosa è fatto resta `memory/index.md` e il work-log, non le spunte di
 > questo file.
 
-## Feature: M0, bootstrap del progetto
+## Feature: M4, definizioni, formato ipuz e stampa
 
-Cosa fa: allinea il repository al sistema del template e crea lo scaffold applicativo Vite
-vanilla-ts con vitest, in modo che le milestone successive partano da una base funzionante.
+Cosa fa: editor delle definizioni per ogni parola (liste Orizzontali e Verticali con
+riconciliazione al variare dello schema, già presente nel modello), salvataggio e apertura di
+file ipuz, vista di stampa A4 con griglia vuota numerata, definizioni e pagina della soluzione.
 
 File da creare:
 
 ```
-package.json, vite.config.ts, tsconfig.json, vitest.config.ts   scaffold toolchain
-index.html, src/main.ts, src/styles/app.css                     ingresso applicazione
+src/ui/cluePanel.ts     editor definizioni con liste per direzione e cestino orfane
+src/io/ipuz.ts          toIpuz e fromIpuz, profilo bloccato in scrittura, lettura tollerante
+src/io/ipuz.test.ts     round-trip su fixture, anche griglie irregolari
+src/print/printView.ts  documento di stampa
+src/print/print.css     regole @media print, formato A4
 ```
 
 File da modificare:
 
 ```
-nessuno oltre allo scaffold
+src/ui/toolbar.ts    pulsanti Apri, Salva (.ipuz), Stampa, dialogo metadati
+src/io/autosave.ts   migrazione dell'autosave dal formato provvisorio v0 a ipuz
+src/main.ts          montaggio del pannello definizioni e della stampa
 ```
 
 Definition of done:
 
-- [x] struttura .claude conforme al template, gitignore attivo prima di _notes
-- [x] materiale di riferimento spostato in docs/reference, exe e pdf ignorati
-- [x] documento normativo salvato in docs/normativa-cruciverba-italia.md
-- [x] npm run build e npm test verdi
-- [ ] comandi git consegnati all'utente ed eseguiti, poi sync-context
+- [ ] round-trip fromIpuz(toIpuz(p)) identico su fixture incluse griglie irregolari
+- [ ] file .ipuz scaricabile e riapribile; autosave migrato a ipuz
+- [ ] anteprima di stampa corretta per 13x13 e 21x13 (griglia, definizioni, soluzione)
+- [ ] le definizioni sopravvivono alle modifiche dello schema (riconciliazione + orfane)
 
 Domande aperte:
 
-Nessuna al momento; le scelte di stack sono registrate in memory/decisions.md.
+Nessuna: il profilo ipuz e le convenzioni sono fissati in ADR-005.
 
 ## Riconciliazione
 
-Ultima verifica: 2026-07-03 al commit PENDING-FIRST-COMMIT.
+Ultima verifica: 2026-07-06 al commit c4a2172 (M3 completata, commit M2+M3 in attesa).

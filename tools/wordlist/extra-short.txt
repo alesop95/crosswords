@@ -1,0 +1,80 @@
+# Parole brevi legittime nei cruciverba italiani, curate a mano.
+# Formato: PAROLA;score (0..100). Righe vuote e commenti # ignorati.
+# Queste voci vincono sul punteggio calcolato dalla pipeline.
+
+# Note musicali
+DO;60
+RE;60
+MI;60
+FA;60
+SOL;60
+LA;60
+SI;60
+
+# Articoli, preposizioni, congiunzioni, pronomi
+AL;70
+DA;70
+DI;70
+IN;70
+NE;70
+SU;70
+TU;70
+IO;70
+LO;70
+LE;70
+GLI;70
+UNO;70
+UNA;70
+CHE;70
+CHI;70
+COI;60
+CUI;65
+MA;70
+SE;70
+NO;70
+OK;55
+
+# Avverbi e voci comuni corte
+ORA;70
+QUI;70
+QUA;70
+GIA;70
+PIU;70
+TRA;70
+FRA;70
+PER;70
+CON;70
+NON;70
+ETA;70
+BLU;65
+TRE;70
+SEI;70
+RIO;60
+VIA;70
+ZIO;65
+ZIA;65
+OCA;65
+APE;65
+ARA;55
+ERA;70
+IRA;65
+ORO;70
+USO;68
+ALA;65
+ANO;40
+ECO;65
+EST;65
+SUD;65
+EX;55
+
+# Sigle e abbreviazioni da enigmistica
+TV;60
+CD;55
+DC;45
+DJ;50
+KO;55
+UE;55
+USA;60
+RAI;55
+IVA;60
+DOC;55

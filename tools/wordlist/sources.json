@@ -1,0 +1,33 @@
+{
+  "comment": "Sorgenti della pipeline wordlist. I file si scaricano in tools/wordlist/downloads/ (git-ignorata). sha256 valorizzati al primo download riuscito: il build fallisce se un nuovo download non corrisponde.",
+  "sources": [
+    {
+      "name": "morph-it",
+      "file": "morph-it_048_utf8.txt",
+      "url": "https://raw.githubusercontent.com/TraMOOC-Impleval/lemmatize_italian_data/master/morph-it_048_utf8.txt",
+      "license": "CC BY-SA 2.0 / LGPL (dual), copyright Marco Baroni ed Eros Zanchetta",
+      "sha256": "7375216351ee59cee4326b455503f3a6c4e9542cd63ecb86ff5cd58ca5c8e800"
+    },
+    {
+      "name": "itwac-nouns",
+      "file": "itwac_nouns_lemmas_notail_2_0_0.csv",
+      "url": "https://raw.githubusercontent.com/franfranz/Word_Frequency_Lists_ITA/main/itwac_nouns_lemmas_notail_2_0_0.csv",
+      "license": "MIT",
+      "sha256": "5e2727eb69791d7159311b10c647eba6190cf46a92200396246da5ddb3e56db4"
+    },
+    {
+      "name": "itwac-verbs",
+      "file": "itwac_verbs_lemmas_notail_2_1_0.csv",
+      "url": "https://raw.githubusercontent.com/franfranz/Word_Frequency_Lists_ITA/main/itwac_verbs_lemmas_notail_2_1_0.csv",
+      "license": "MIT",
+      "sha256": "175ee42d0b18d983b7728aec3421e197039fd5f32bddabb5793c23b42cdd768e"
+    },
+    {
+      "name": "itwac-adjectives",
+      "file": "itwac_adj_lemmas_notail_2_1_0.csv",
+      "url": "https://raw.githubusercontent.com/franfranz/Word_Frequency_Lists_ITA/main/itwac_adj_lemmas_notail_2_1_0.csv",
+      "license": "MIT",
+      "sha256": "3a2528607f4f192629ad7c4feb8cd23f2eca6e0be3dfd0c698cc356644806a7a"
+    }
+  ]
+}

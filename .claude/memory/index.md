@@ -8,7 +8,7 @@
 
 ```
 Branch attivo:        main
-Commit di riferimento: PENDING-FIRST-COMMIT
+Commit di riferimento: c4a2172
 Data snapshot:        2026-07-03
 ```
 
@@ -16,16 +16,16 @@ Data snapshot:        2026-07-03
 
 | Scheda | last-verified | Stato |
 |---|---|---|
-| STACK.md | PENDING-FIRST-COMMIT | aggiornata |
-| design-and-security.md | PENDING-FIRST-COMMIT | aggiornata |
-| deployment.md | PENDING-FIRST-COMMIT | aggiornata |
-| dev-testing.md | PENDING-FIRST-COMMIT | aggiornata |
-| current-work.md | PENDING-FIRST-COMMIT | aggiornata |
-| roadmap.md | PENDING-FIRST-COMMIT | aggiornata |
+| STACK.md | c4a2172 | aggiornata |
+| design-and-security.md | c4a2172 | aggiornata |
+| deployment.md | c4a2172 | aggiornata |
+| dev-testing.md | c4a2172 | aggiornata |
+| current-work.md | c4a2172 | aggiornata |
+| roadmap.md | c4a2172 | aggiornata |
 
 ## Punto di ripresa
 
-Milestone M0 e M1 completate lato codice: template allineato, scaffold Vite, modello griglia
-ed editor funzionanti con 18 test verdi. In attesa del primo commit e push manuali dell'utente
-verso alesop95/crosswords, poi sync-context sostituisce i placeholder. Prossima milestone: M2,
-pipeline wordlist italiana con verifica licenze come primo passo.
+Milestone M0..M3 completate: editor griglia, wordlist con suggerimenti e hotspot, filler CSP
+nel Web Worker con MAC e restart geometrici (5/5 seed su 13x13 realistica, 93-2365 ms).
+Commit di M2 e M3 da eseguire (manuali, utente). Prossima milestone: M4, definizioni + ipuz +
+stampa (cluePanel, io/ipuz.ts con round-trip, printView A4).

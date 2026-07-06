@@ -10,9 +10,11 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "wordlist": "node tools/wordlist/build.mjs"
   },
   "devDependencies": {
+    "@types/node": "^26.1.0",
     "typescript": "^5.8.0",
     "vite": "^6.3.0",
     "vitest": "^3.1.0"

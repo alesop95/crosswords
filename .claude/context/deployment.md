@@ -1,11 +1,11 @@
 ---
-generated-from-commit: PENDING-FIRST-COMMIT
+generated-from-commit: c4a2172
 generated-from-branch: main
 generated-date: 2026-07-03
 covers-paths:
   - vite.config.ts
   - .github/**
-last-verified-commit: PENDING-FIRST-COMMIT
+last-verified-commit: c4a2172
 ---
 
 # Deployment
