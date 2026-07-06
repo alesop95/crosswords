@@ -25,7 +25,8 @@ Data snapshot:        2026-07-03
 
 ## Punto di ripresa
 
-Milestone M0..M3 completate: editor griglia, wordlist con suggerimenti e hotspot, filler CSP
-nel Web Worker con MAC e restart geometrici (5/5 seed su 13x13 realistica, 93-2365 ms).
-Commit di M2 e M3 da eseguire (manuali, utente). Prossima milestone: M4, definizioni + ipuz +
-stampa (cluePanel, io/ipuz.ts con round-trip, printView A4).
+Milestone M0..M4 completate: editor griglia, wordlist (349.027 voci, nomi propri inclusi,
+apocopate escluse), filler CSP nel worker, definizioni con cestino orfane, ipuz round-trip,
+stampa A4 con soluzione. Commit di M2..M4 da eseguire (manuali, utente). Prossima milestone:
+M5, rifinitura v1: import lista parole personale, deploy GitHub Pages (base /crosswords/),
+README con screenshot.

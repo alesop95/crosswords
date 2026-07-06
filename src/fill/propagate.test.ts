@@ -39,6 +39,21 @@ describe('propagate su griglia 2x2 piena', () => {
   });
 });
 
+describe('propagate con parole complete fuori dizionario', () => {
+  it('una parola completa non nel dizionario non uccide la griglia', () => {
+    // XY completa sulla prima riga NON e' nel dizionario: vincola gli
+    // incroci alle sue lettere ma non deve produrre il vicolo cieco globale
+    const g = gridFromAscii(['XY', '..']);
+    const slots = extractSlots(g);
+    const dictWide = WordList.fromText(['XO;60', 'YO;70', 'OO;10', 'NO;90'].join('\n'));
+    const result = propagate(g, slots, dictWide);
+    // sotto la X e' ammessa solo la O (unica X? nel dizionario: XO)
+    const below = result.feasibleLetters.get(cellIndex(g, 1, 0))!;
+    expect([...below]).toEqual(['O']);
+    expect(result.hasDeadEnd).toBe(false);
+  });
+});
+
 describe('propagate con lunghezze non coperte dal dizionario', () => {
   it('slot lunghi non vincolano ma le celle restano libere', () => {
     const grid = gridFromAscii(['...', '...', '...']);

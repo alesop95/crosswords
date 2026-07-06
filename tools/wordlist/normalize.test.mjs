@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+  inflectionPenalty,
+  isApocopatedVerb,
   isProperNoun,
   normalizeWord,
   parseMorphitLine,
@@ -57,9 +59,46 @@ describe('parseMorphitLine', () => {
 });
 
 describe('isProperNoun', () => {
-  it('riconosce le iniziali maiuscole', () => {
-    expect(isProperNoun({ form: 'Roma', lemma: 'Roma', features: 'NOUN-F:s' })).toBe(true);
+  it('riconosce iniziali maiuscole e tratto NPR', () => {
+    expect(isProperNoun({ form: 'Roma', lemma: 'Roma', features: 'NPR' })).toBe(true);
+    expect(isProperNoun({ form: 'Dante', lemma: 'Dante', features: 'NPR' })).toBe(true);
     expect(isProperNoun({ form: 'casa', lemma: 'casa', features: 'NOUN-F:s' })).toBe(false);
+  });
+});
+
+describe('isApocopatedVerb', () => {
+  it('esclude le forme verbali poetiche troncate', () => {
+    expect(
+      isApocopatedVerb({ form: 'considerasser', lemma: 'considerare', features: 'VER:sub+impf+3+p' }),
+    ).toBe(true);
+    expect(isApocopatedVerb({ form: 'andar', lemma: 'andare', features: 'VER:inf+pres' })).toBe(true);
+    expect(isApocopatedVerb({ form: 'fosser', lemma: 'essere', features: 'AUX:sub+impf+3+p' })).toBe(true);
+  });
+
+  it('conserva le forme verbali regolari e le non-verbali in consonante', () => {
+    expect(isApocopatedVerb({ form: 'fanno', lemma: 'fare', features: 'VER:ind+pres+3+p' })).toBe(false);
+    expect(isApocopatedVerb({ form: 'andò', lemma: 'andare', features: 'VER:ind+past+3+s' })).toBe(false);
+    expect(isApocopatedVerb({ form: 'film', lemma: 'film', features: 'NOUN-M:s' })).toBe(false);
+    expect(isApocopatedVerb({ form: 'gran', lemma: 'gran', features: 'ADJ:pos+f+s' })).toBe(false);
+  });
+});
+
+describe('inflectionPenalty', () => {
+  it('penalizza gli aggregati con clitici', () => {
+    const entry = { form: 'facendogliela', lemma: 'fare', features: 'VER:ger+pres+gliela' };
+    expect(inflectionPenalty(entry)).toBeGreaterThanOrEqual(30);
+  });
+
+  it('penalizza i superlativi', () => {
+    const entry = { form: 'pubblicissima', lemma: 'pubblico', features: 'ADJ:sup+f+s' };
+    expect(inflectionPenalty(entry)).toBeGreaterThanOrEqual(25);
+  });
+
+  it('non penalizza le forme regolari', () => {
+    expect(inflectionPenalty({ form: 'case', lemma: 'casa', features: 'NOUN-F:p' })).toBe(0);
+    expect(inflectionPenalty({ form: 'fanno', lemma: 'fare', features: 'VER:ind+pres+3+p' })).toBe(
+      0,
+    );
   });
 });
 

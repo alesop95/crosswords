@@ -209,6 +209,129 @@ body {
   pointer-events: none;
 }
 
+.clue-panel {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+  max-width: 70rem;
+}
+
+.clue-col {
+  flex: 1;
+  min-width: 18rem;
+}
+
+.clue-col h2 {
+  font-size: 0.95rem;
+  margin: 0 0 0.4rem;
+}
+
+.clue-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 2px;
+  padding: 1px 2px;
+  border-radius: 4px;
+}
+
+.clue-row-active {
+  background: var(--active-slot);
+}
+
+.clue-number {
+  min-width: 2ch;
+  text-align: right;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.clue-word {
+  font-family: ui-monospace, 'Cascadia Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  min-width: 9ch;
+  cursor: pointer;
+  color: #333;
+}
+
+.clue-word:hover {
+  color: var(--accent);
+}
+
+.clue-input {
+  flex: 1;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.clue-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.clue-orphans {
+  border-left: 3px solid #f59e0b;
+  padding-left: 0.75rem;
+}
+
+.clue-hint {
+  font-size: 0.75rem;
+  color: #666;
+  margin: 0 0 0.4rem;
+}
+
+.clue-orphans ul {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+}
+
+.orphan-clue {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  margin-bottom: 2px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.meta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 22rem;
+}
+
+.meta-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.meta-form input {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.meta-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+#tb-meta-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.3);
+}
+
 .hint {
   max-width: 46rem;
   color: #666;

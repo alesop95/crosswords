@@ -1,0 +1,94 @@
+/* Vista di stampa: nascosta a schermo, unica cosa visibile in stampa. */
+
+#print-root {
+  display: none;
+}
+
+@media print {
+  body > #app {
+    display: none !important;
+  }
+
+  #print-root {
+    display: block;
+  }
+
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  .print-page {
+    page-break-after: always;
+  }
+
+  .print-page:last-child {
+    page-break-after: auto;
+  }
+
+  .print-page h1 {
+    font-size: 16pt;
+    margin: 0 0 2mm;
+  }
+
+  .print-byline {
+    margin: 0 0 4mm;
+    font-size: 10pt;
+    color: #333;
+  }
+
+  .print-grid {
+    width: 120mm;
+    max-width: 100%;
+    display: block;
+    margin-bottom: 6mm;
+  }
+
+  .pcell {
+    fill: #fff;
+    stroke: #000;
+    stroke-width: 1;
+  }
+
+  .pcell-block {
+    fill: #000;
+  }
+
+  .pcell-number {
+    font-size: 8px;
+    font-family: system-ui, sans-serif;
+    fill: #000;
+  }
+
+  .pcell-letter {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: system-ui, sans-serif;
+    text-anchor: middle;
+    fill: #000;
+  }
+
+  .print-clues {
+    display: flex;
+    gap: 10mm;
+    font-size: 9.5pt;
+  }
+
+  .print-clues > div {
+    flex: 1;
+  }
+
+  .print-clues h2 {
+    font-size: 11pt;
+    margin: 0 0 2mm;
+  }
+
+  .print-clues ol {
+    margin: 0;
+    padding-left: 5mm;
+  }
+
+  .print-clues li {
+    margin-bottom: 1mm;
+  }
+}

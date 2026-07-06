@@ -3,11 +3,14 @@ import { Store } from './ui/store';
 import { mountGridView } from './ui/gridView';
 import { mountToolbar } from './ui/toolbar';
 import { mountSuggestPanel } from './ui/suggestPanel';
+import { mountCluePanel } from './ui/cluePanel';
 import { startHotspots } from './ui/hotspots';
 import { isStorageAvailable, load, startAutosave } from './io/autosave';
 import { loadPersonalWords, loadWordList } from './dict/loader';
 import { FillerClient } from './fill/fillerClient';
+import { renderPrintView } from './print/printView';
 import { t } from './ui/i18n';
+import './print/print.css';
 
 const app = document.querySelector<HTMLDivElement>('#app');
 
@@ -22,10 +25,15 @@ if (app) {
         <div id="grid-root" class="grid-root"></div>
         <aside id="suggest-root" class="suggest-root"></aside>
       </div>
+      <div id="clue-root"></div>
       <p class="hint">${t.helpHint}</p>
       <p id="status" class="status"></p>
     </main>
   `;
+
+  const printRoot = document.createElement('div');
+  printRoot.id = 'print-root';
+  document.body.appendChild(printRoot);
 
   const status = app.querySelector<HTMLParagraphElement>('#status')!;
   const storageOk = isStorageAvailable();
@@ -35,11 +43,20 @@ if (app) {
   if (restored) status.textContent = t.restored;
   if (!storageOk) status.textContent = t.storageUnavailable;
 
-  const toolbar = mountToolbar(app.querySelector('#toolbar-root')!, store, (text) => {
-    status.textContent = text;
-  });
+  const toolbar = mountToolbar(
+    app.querySelector('#toolbar-root')!,
+    store,
+    (text) => {
+      status.textContent = text;
+    },
+    () => {
+      renderPrintView(printRoot, store.getState().puzzle);
+      window.print();
+    },
+  );
   mountGridView(app.querySelector('#grid-root')!, store);
   const suggestPanel = mountSuggestPanel(app.querySelector('#suggest-root')!, store);
+  mountCluePanel(app.querySelector('#clue-root')!, store);
 
   if (storageOk) {
     startAutosave(

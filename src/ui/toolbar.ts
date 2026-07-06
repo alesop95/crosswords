@@ -4,6 +4,7 @@ import { MAX_SIZE, MIN_SIZE } from '../core/types';
 import { createPuzzle } from '../core/puzzle';
 import { setLetter } from '../core/grid';
 import type { FillerClient, FillHandle } from '../fill/fillerClient';
+import { parseIpuz, serializeIpuz } from '../io/ipuz';
 import { activeSlot } from './activeSlot';
 import { t } from './i18n';
 
@@ -11,6 +12,7 @@ export function mountToolbar(
   container: HTMLElement,
   store: Store,
   reportStatus: (text: string) => void,
+  onPrint: () => void,
 ): { setFiller: (filler: FillerClient) => void } {
   container.innerHTML = `
     <div class="toolbar">
@@ -32,7 +34,25 @@ export function mountToolbar(
       <button id="tb-fill-slot" type="button" disabled>${t.fillSlot}</button>
       <button id="tb-cancel" type="button" hidden>${t.cancelFill}</button>
       <span id="tb-progress" class="toolbar-progress"></span>
+      <span class="toolbar-sep"></span>
+      <button id="tb-open" type="button">${t.open}</button>
+      <button id="tb-save" type="button">${t.save}</button>
+      <button id="tb-print" type="button">${t.print}</button>
+      <button id="tb-meta" type="button">${t.metadata}</button>
+      <input id="tb-file" type="file" accept=".ipuz,application/json,.json" hidden />
     </div>
+    <dialog id="tb-meta-dialog">
+      <form method="dialog" class="meta-form">
+        <label>${t.metaTitle} <input id="meta-title" type="text" /></label>
+        <label>${t.metaAuthor} <input id="meta-author" type="text" /></label>
+        <label>${t.metaCopyright} <input id="meta-copyright" type="text" /></label>
+        <label>${t.metaNotes} <input id="meta-notes" type="text" /></label>
+        <div class="meta-actions">
+          <button value="cancel" formnovalidate>${t.metaCancel}</button>
+          <button id="meta-ok" value="ok">${t.metaOk}</button>
+        </div>
+      </form>
+    </dialog>
   `;
 
   const widthInput = container.querySelector<HTMLInputElement>('#tb-width')!;
@@ -77,9 +97,9 @@ export function mountToolbar(
 
   fillButton.addEventListener('click', async () => {
     if (!filler || running) return;
-    const { puzzle } = store.getState();
+    const startPuzzle = store.getState().puzzle;
     reportStatus(t.fillRunning);
-    const handle = filler.fill(puzzle.grid, puzzle.slots, {
+    const handle = filler.fill(startPuzzle.grid, startPuzzle.slots, {
       onProgress: (assigned, total) => {
         progress.textContent = `${assigned}/${total}`;
       },
@@ -87,6 +107,12 @@ export function mountToolbar(
     setRunning(handle);
     const result = await handle.promise;
     setRunning(null);
+    // se nel frattempo il puzzle e' cambiato (nuova griglia, undo, modifiche)
+    // il risultato riguarda uno schema che non esiste piu': si scarta
+    if (store.getState().puzzle !== startPuzzle) {
+      reportStatus(t.fillStale);
+      return;
+    }
     if (result === null) {
       reportStatus(t.fillCancelled);
       return;
@@ -95,7 +121,7 @@ export function mountToolbar(
       reportStatus(t.fillInfeasible);
       return;
     }
-    store.applyPuzzle({ ...store.getState().puzzle, grid: result.grid });
+    store.applyPuzzle({ ...startPuzzle, grid: result.grid });
     reportStatus(
       result.status === 'filled' ? t.fillDone : t.fillPartial(result.assigned, result.totalSlots),
     );
@@ -106,7 +132,12 @@ export function mountToolbar(
     const state = store.getState();
     const slot = activeSlot(state);
     if (!slot) return;
+    const startPuzzle = state.puzzle;
     const word = await filler.fillSlot(state.puzzle.grid, state.puzzle.slots, slot.id);
+    if (store.getState().puzzle !== startPuzzle) {
+      reportStatus(t.fillStale);
+      return;
+    }
     if (word === null) {
       reportStatus(t.fillNoWord);
       return;
@@ -125,6 +156,62 @@ export function mountToolbar(
     running?.cancel();
     setRunning(null);
     reportStatus(t.fillCancelled);
+  });
+
+  const openButton = container.querySelector<HTMLButtonElement>('#tb-open')!;
+  const saveButton = container.querySelector<HTMLButtonElement>('#tb-save')!;
+  const printButton = container.querySelector<HTMLButtonElement>('#tb-print')!;
+  const metaButton = container.querySelector<HTMLButtonElement>('#tb-meta')!;
+  const fileInput = container.querySelector<HTMLInputElement>('#tb-file')!;
+  const metaDialog = container.querySelector<HTMLDialogElement>('#tb-meta-dialog')!;
+
+  openButton.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files?.[0];
+    fileInput.value = '';
+    if (!file) return;
+    try {
+      const puzzle = parseIpuz(await file.text());
+      store.replacePuzzle(puzzle);
+      reportStatus('');
+    } catch (err) {
+      reportStatus(t.openError + (err instanceof Error ? err.message : String(err)));
+    }
+  });
+
+  saveButton.addEventListener('click', () => {
+    const { puzzle } = store.getState();
+    const blob = new Blob([serializeIpuz(puzzle)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    const name = puzzle.meta.title.trim().replaceAll(/[^\w-]+/g, '-') || 'cruciverba';
+    link.download = `${name}.ipuz`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+
+  printButton.addEventListener('click', onPrint);
+
+  metaButton.addEventListener('click', () => {
+    const { meta } = store.getState().puzzle;
+    container.querySelector<HTMLInputElement>('#meta-title')!.value = meta.title;
+    container.querySelector<HTMLInputElement>('#meta-author')!.value = meta.author;
+    container.querySelector<HTMLInputElement>('#meta-copyright')!.value = meta.copyright;
+    container.querySelector<HTMLInputElement>('#meta-notes')!.value = meta.notes;
+    metaDialog.showModal();
+  });
+  metaDialog.addEventListener('close', () => {
+    if (metaDialog.returnValue !== 'ok') return;
+    const { puzzle } = store.getState();
+    store.applyPuzzle({
+      ...puzzle,
+      meta: {
+        title: container.querySelector<HTMLInputElement>('#meta-title')!.value.trim(),
+        author: container.querySelector<HTMLInputElement>('#meta-author')!.value.trim(),
+        copyright: container.querySelector<HTMLInputElement>('#meta-copyright')!.value.trim(),
+        notes: container.querySelector<HTMLInputElement>('#meta-notes')!.value.trim(),
+      },
+    });
   });
 
   store.subscribe((state) => {

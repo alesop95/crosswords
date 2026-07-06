@@ -1,11 +1,14 @@
 import type { Puzzle } from '../core/types';
 import { extractSlots } from '../core/slots';
+import { parseIpuz, serializeIpuz } from './ipuz';
 
 /**
- * Autosalvataggio in localStorage. La chiave e' versionata: v0 e' il formato
- * interno provvisorio, sostituito da ipuz nella milestone M4 con migrazione.
+ * Autosalvataggio in localStorage. Dal v1 il formato e' lo stesso ipuz dei
+ * file (ADR-005: una sola serializzazione); il vecchio formato interno v0
+ * viene migrato in lettura e poi rimosso.
  */
-const KEY = 'crosswords:autosave:v0';
+const KEY_V1 = 'crosswords:autosave:v1';
+const KEY_V0 = 'crosswords:autosave:v0';
 const DEBOUNCE_MS = 1000;
 
 export function isStorageAvailable(): boolean {
@@ -20,23 +23,28 @@ export function isStorageAvailable(): boolean {
 }
 
 export function saveNow(puzzle: Puzzle): void {
-  const payload = {
-    v: 0,
-    grid: {
-      width: puzzle.grid.width,
-      height: puzzle.grid.height,
-      cells: puzzle.grid.cells.map((c) => (c.block ? '#' : (c.letter ?? '.'))).join(''),
-    },
-    clues: puzzle.clues,
-    orphanClues: puzzle.orphanClues,
-    meta: puzzle.meta,
-    symmetry: puzzle.symmetry,
-  };
-  window.localStorage.setItem(KEY, JSON.stringify(payload));
+  window.localStorage.setItem(KEY_V1, serializeIpuz(puzzle));
 }
 
 export function load(): Puzzle | null {
-  const raw = window.localStorage.getItem(KEY);
+  const rawV1 = window.localStorage.getItem(KEY_V1);
+  if (rawV1) {
+    try {
+      return parseIpuz(rawV1);
+    } catch {
+      // autosave corrotto: si ignora, non vale un blocco all'avvio
+    }
+  }
+  const legacy = loadLegacyV0();
+  if (legacy) {
+    saveNow(legacy);
+    window.localStorage.removeItem(KEY_V0);
+  }
+  return legacy;
+}
+
+function loadLegacyV0(): Puzzle | null {
+  const raw = window.localStorage.getItem(KEY_V0);
   if (!raw) return null;
   try {
     const data = JSON.parse(raw);
@@ -53,8 +61,6 @@ export function load(): Puzzle | null {
         return { block: false, letter: /^[A-Z]$/.test(ch) ? ch : null };
       }),
     };
-    // Gli id degli slot sono deterministici a parita' di griglia: le definizioni
-    // salvate restano valide, basta ricalcolare gli slot.
     const puzzle: Puzzle = {
       grid,
       slots: extractSlots(grid),

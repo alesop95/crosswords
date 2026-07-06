@@ -6,6 +6,58 @@
 > documenti `.docx`, con il nome del documento sorgente e l'esito, così la data di allineamento
 > sopravvive a un clone.
 
+## 2026-07-06 — Milestone M4: definizioni, formato ipuz e stampa
+
+Commit: da creare
+File toccati: `src/io/ipuz.ts` con test round-trip e lettura tollerante, `src/io/autosave.ts`
+(migrato a ipuz v1 con migrazione dal v0), `src/ui/cluePanel.ts` (liste Orizzontali/Verticali,
+cestino definizioni orfane con recupero), `src/print/{printView.ts,print.css}` (pagina griglia
+numerata + definizioni, pagina soluzione, A4), toolbar con Apri/Salva/.ipuz/Stampa/dialog
+metadati, `main.ts`, css.
+Motivo: completamento del ciclo autore: scrivere le definizioni accanto alla griglia,
+salvare e riaprire il lavoro in formato ipuz v2 (profilo bloccato in scrittura, lettura
+tollerante alle varianti: celle oggetto, null come blocco, clue come coppie o oggetti, token
+di blocco personalizzato), stampare schema e soluzione dal dialogo del browser. Test 68 verdi.
+
+## 2026-07-06 — Collaudo manuale round 3: fuori le forme verbali apocopate
+
+Commit: da creare
+File toccati: `tools/wordlist/{normalize,build}.mjs` + test, asset rigenerato.
+Motivo: il collaudo utente ha scovato CONSIDERASSER proposto dal filler: Morph-it include le
+forme verbali poetiche troncate (considerasser, andar, fosser, amar) taggate come forme
+normali, e la frequenza del lemma le faceva salire in classifica. Regola nuova: una forma
+taggata VER/AUX/MOD/CAU che termina in consonante e' un troncamento poetico e si esclude;
+FILM, GAS, GRAN (non verbali) e le forme regolari restano. Rimosse ~46.000 voci, asset a
+349.027; test 61 verdi, fill 13x13 5/5 seed.
+
+## 2026-07-06 — Collaudo manuale round 2: tre fix da feedback utente
+
+Commit: da creare
+File toccati: `src/fill/propagate.ts` (slot completi come vincoli fissi), `src/ui/toolbar.ts`
+(guardia anti-corsa sul risultato del fill), `src/ui/{suggestPanel,i18n}.ts` (etichette
+Orizzontale/Verticale), `tools/wordlist/{normalize,build}.mjs` + test, asset rigenerato.
+Motivo: (1) una parola completa assente dal dizionario faceva collassare la propagazione e
+tingeva di rosso l'intera griglia: ora le parole complete sono lettere fisse che vincolano gli
+incroci senza dichiarare vicolo cieco; (2) il risultato di un riempimento avviato su uno
+schema poi sostituito veniva applicato o notificato sulla griglia nuova: ora si scarta con
+messaggio dedicato; (3) dizionario: inclusi i nomi propri di Morph-it (tratto NPR: Dante,
+Roma, Manzoni, Garibaldi) con punteggio fisso 40, penalizzate le forme con clitici (-30), i
+superlativi (-25) e le forme molto piu' lunghe del lemma, che ereditavano il punteggio pieno
+(FACENDOGLIELA 100 -> 46, PUBBLICISSIMA 87 -> 50). Asset: 395.023 voci. Test 59 verdi; fill
+13x13 5/5 seed tra 141 e 598 ms.
+
+## 2026-07-06 — Fix caricamento dizionario nel browser (doppia decompressione)
+
+Commit: da creare
+File toccati: `src/dict/loader.ts`; `vite.config.ts` (porta dev fissa 5871, preview 5872,
+strictPort) e scheda `deployment.md`.
+Motivo: primo collaudo manuale nel browser fallito, dizionario mai caricato ("Failed to
+fetch" in console). Causa: il dev server di Vite serve i file .gz con Content-Encoding: gzip,
+il browser decomprime da solo e il DecompressionStream applicato al corpo gia' in chiaro
+andava in errore; su GitHub Pages invece il file arrivera' binario. Il loader ora decide dai
+magic byte (0x1f 0x8b) se decomprimere. Verificato via Node su entrambi gli scenari, 392.920
+voci in entrambi i casi.
+
 ## 2026-07-06 — Milestone M3: filler automatico e assistito nel Web Worker
 
 Commit: da creare

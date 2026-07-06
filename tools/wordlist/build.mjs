@@ -16,6 +16,9 @@ import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import {
   BASELINE_SCORE,
+  PROPER_NOUN_SCORE,
+  inflectionPenalty,
+  isApocopatedVerb,
   isProperNoun,
   normalizeWord,
   parseMorphitLine,
@@ -78,11 +81,18 @@ async function main() {
   for (const line of morphit.split('\n')) {
     read++;
     const parsed = parseMorphitLine(line.replace(/\r$/, ''));
-    if (!parsed || isProperNoun(parsed)) continue;
+    if (!parsed || isApocopatedVerb(parsed)) continue;
     const word = normalizeWord(parsed.form);
     if (!word) continue;
-    const freq = lemmaFreq.get(parsed.lemma.toLowerCase());
-    const score = freq === undefined ? BASELINE_SCORE : scoreFromFrequency(freq, maxFreq);
+    let score;
+    if (isProperNoun(parsed)) {
+      // nomi propri (NPR): materiale da enigmistica, punteggio fisso medio
+      score = PROPER_NOUN_SCORE;
+    } else {
+      const freq = lemmaFreq.get(parsed.lemma.toLowerCase());
+      const base = freq === undefined ? BASELINE_SCORE : scoreFromFrequency(freq, maxFreq);
+      score = Math.max(1, base - inflectionPenalty(parsed));
+    }
     const prev = entries.get(word);
     if (prev === undefined || score > prev) entries.set(word, score);
     kept++;

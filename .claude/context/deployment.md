@@ -15,7 +15,9 @@ last-verified-commit: c4a2172
 
 ## Livelli
 
-L'ambiente di sviluppo è il server locale di Vite. La produzione prevista è GitHub Pages sul
+L'ambiente di sviluppo è il server locale di Vite, fissato alla porta 5871 (anteprima della
+build alla 5872) con strictPort, così un conflitto di porta produce un errore esplicito invece
+di uno spostamento silenzioso. La produzione prevista è GitHub Pages sul
 repository alesop95/crosswords, con base path /crosswords/ nella configurazione di Vite; il
 deploy verrà configurato nella milestone M5 e non esiste ancora.
 

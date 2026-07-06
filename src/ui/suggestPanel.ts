@@ -58,7 +58,8 @@ export function mountSuggestPanel(container: HTMLElement, store: Store): {
       return;
     }
     const pattern = slotPattern(state.puzzle.grid, slot);
-    title.textContent = `${slot.id} — ${pattern.replaceAll('?', '·')}`;
+    const dirLabel = slot.dir === 'across' ? t.dirAcross : t.dirDown;
+    title.textContent = `${slot.number} ${dirLabel} — ${pattern.replaceAll('?', '·')}`;
     if (!dict) {
       status.textContent = t.dictLoading;
       return;

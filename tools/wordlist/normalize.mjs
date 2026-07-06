@@ -33,12 +33,44 @@ export function parseMorphitLine(line) {
 }
 
 /**
- * Proxy per i nomi propri: in Morph-it le voci comuni sono minuscole, i nomi
- * propri portano l'iniziale maiuscola (o il tratto NPR quando presente).
+ * Nomi propri: in Morph-it portano il tratto NPR o l'iniziale maiuscola.
+ * Non si scartano (l'enigmistica italiana ne fa largo uso: storici,
+ * letterati, toponimi) ma ricevono un punteggio dedicato.
  */
 export function isProperNoun(entry) {
   if (/^[A-ZÀ-Þ]/.test(entry.form)) return true;
   return /\bNPR\b/i.test(entry.features);
+}
+
+export const PROPER_NOUN_SCORE = 40;
+
+/**
+ * Forme verbali apocopate/poetiche (considerasser, andar, fosser, amar):
+ * Morph-it le include come forme normali, ma in italiano standard ogni forma
+ * verbale termina in vocale. Una forma verbale che finisce in consonante e'
+ * un troncamento poetico e non appartiene a un cruciverba moderno.
+ */
+export function isApocopatedVerb(entry) {
+  if (!/^(VER|AUX|MOD|CAU):/.test(entry.features)) return false;
+  return /[^aeiou]$/i.test(stripDiacritics(entry.form));
+}
+
+const CLITICS =
+  /\+(la|le|li|lo|mi|ti|si|ci|vi|ne|gli|gliela|gliele|glieli|glielo|gliene|cela|cele|celi|celo|cene|mela|mele|meli|melo|mene|tela|tele|teli|telo|tene|sela|sele|seli|selo|sene|vela|vele|veli|velo|vene)$/;
+
+/**
+ * Penalita' per le forme flesse "gonfie" che ereditano il punteggio del
+ * lemma senza averne la frequenza d'uso: aggregati con clitici
+ * (facendogliela), superlativi (pubblicissima) e in generale forme molto
+ * piu' lunghe del lemma.
+ */
+export function inflectionPenalty(entry) {
+  let penalty = 0;
+  if (CLITICS.test(entry.features)) penalty += 30;
+  if (/[:+]sup\b/.test(entry.features)) penalty += 25;
+  const extra = entry.form.length - entry.lemma.length;
+  if (extra > 1) penalty += 3 * (extra - 1);
+  return penalty;
 }
 
 /**
