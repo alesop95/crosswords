@@ -25,8 +25,7 @@ Data snapshot:        2026-07-03
 
 ## Punto di ripresa
 
-Versione 1 completa, milestone M0..M5 tutte chiuse: editor griglia, wordlist (349.027 voci),
-filler CSP nel worker, definizioni, ipuz, stampa, import parole personali, workflow di deploy
-su GitHub Pages e README. Azioni manuali pendenti dell'utente: commit e push di M2..M5,
-attivazione Pages (sorgente GitHub Actions) nelle impostazioni del repository, screenshot per
-il README in docs/img/app.png. Il seguito e' la roadmap v2.
+Versione 1 completa e PUBBLICATA su https://alesop95.github.io/crosswords/ (commit 0829d6c
+pushato, Pages attivo con sorgente GitHub Actions, primo deploy riuscito). Nel working tree
+resta un ultimo commit da fare: README con screenshot (docs/img/app.png) e schede aggiornate.
+Il seguito e' la roadmap v2, dettagliata anche in _notes/RESUME-PROMPT.md.

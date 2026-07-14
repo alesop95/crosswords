@@ -1,7 +1,10 @@
 # crosswords
 
 Costruttore di cruciverba all'italiana nel browser: web app locale-first, senza server e senza
-framework, in TypeScript con Vite. Tutto il lavoro resta sulla tua macchina.
+framework, in TypeScript con Vite. Tutto il lavoro resta sulla tua macchina. Online su
+https://alesop95.github.io/crosswords/
+
+![L'editor: griglia, suggerimenti e definizioni](docs/img/app.png)
 
 Con l'app si disegna lo schema (caselle nere libere, parole da due lettere in su, simmetria
 180° facoltativa, dimensioni da 5×5 a 25×25), si riempie la griglia in automatico o parola per
