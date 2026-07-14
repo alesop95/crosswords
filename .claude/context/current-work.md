@@ -5,7 +5,7 @@ generated-date: 2026-07-03
 covers-paths:
   - src/**
 last-verified-commit: c4a2172
-stato: in pianificazione
+stato: nessuna feature attiva
 ---
 
 # Lavoro in corso
@@ -13,41 +13,16 @@ stato: in pianificazione
 > La fonte di verità su cosa è fatto resta `memory/index.md` e il work-log, non le spunte di
 > questo file.
 
-## Feature: M4, definizioni, formato ipuz e stampa
+## Feature: nessuna attiva
 
-Cosa fa: editor delle definizioni per ogni parola (liste Orizzontali e Verticali con
-riconciliazione al variare dello schema, già presente nel modello), salvataggio e apertura di
-file ipuz, vista di stampa A4 con griglia vuota numerata, definizioni e pagina della soluzione.
+La versione 1 è completa: tutte le milestone da M0 a M5 sono chiuse. Il lavoro riprenderà
+dalle idee della roadmap per la versione 2 (import/export .puz, griglie americane,
+suggerimenti di definizione assistiti, eventuale ingrid_core dietro il protocollo del worker).
 
-File da creare:
-
-```
-src/ui/cluePanel.ts     editor definizioni con liste per direzione e cestino orfane
-src/io/ipuz.ts          toIpuz e fromIpuz, profilo bloccato in scrittura, lettura tollerante
-src/io/ipuz.test.ts     round-trip su fixture, anche griglie irregolari
-src/print/printView.ts  documento di stampa
-src/print/print.css     regole @media print, formato A4
-```
-
-File da modificare:
-
-```
-src/ui/toolbar.ts    pulsanti Apri, Salva (.ipuz), Stampa, dialogo metadati
-src/io/autosave.ts   migrazione dell'autosave dal formato provvisorio v0 a ipuz
-src/main.ts          montaggio del pannello definizioni e della stampa
-```
-
-Definition of done:
-
-- [ ] round-trip fromIpuz(toIpuz(p)) identico su fixture incluse griglie irregolari
-- [ ] file .ipuz scaricabile e riapribile; autosave migrato a ipuz
-- [ ] anteprima di stampa corretta per 13x13 e 21x13 (griglia, definizioni, soluzione)
-- [ ] le definizioni sopravvivono alle modifiche dello schema (riconciliazione + orfane)
-
-Domande aperte:
-
-Nessuna: il profilo ipuz e le convenzioni sono fissati in ADR-005.
+Restano due azioni manuali dell'utente: il commit e push delle milestone M2..M5 e, nelle
+impostazioni GitHub del repository, l'attivazione di Pages con sorgente "GitHub Actions".
+Manca inoltre uno screenshot reale dell'app per il README, da salvare come docs/img/app.png.
 
 ## Riconciliazione
 
-Ultima verifica: 2026-07-06 al commit c4a2172 (M3 completata, commit M2+M3 in attesa).
+Ultima verifica: 2026-07-14 al commit c4a2172 (v1 completa in attesa di commit).

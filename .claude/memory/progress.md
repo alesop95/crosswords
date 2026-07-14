@@ -6,6 +6,19 @@
 > documenti `.docx`, con il nome del documento sorgente e l'esito, così la data di allineamento
 > sopravvive a un clone.
 
+## 2026-07-14 — Milestone M5: rifinitura v1 e deploy
+
+Commit: da creare
+File toccati: `vite.config.ts` (base /crosswords/ nella sola build),
+`.github/workflows/deploy.yml` (test + build + deploy Pages a ogni push su main),
+`src/ui/toolbar.ts` e `src/dict/loader.ts` (pulsante "Parole mie": import .txt di parole
+personali, normalizzate e unite al dizionario locale con ricarica), `README.md` riscritto,
+scheda deployment aggiornata.
+Motivo: chiusura della versione 1. Nota: lo screenshot per il README non e' stato catturabile
+in headless (Chrome renderizza pagina bianca su questa macchina); va fatto a mano e salvato
+come docs/img/app.png. Restano manuali: commit e push, attivazione Pages con sorgente GitHub
+Actions nelle impostazioni del repository.
+
 ## 2026-07-06 — Milestone M4: definizioni, formato ipuz e stampa
 
 Commit: da creare

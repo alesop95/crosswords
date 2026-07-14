@@ -26,6 +26,11 @@ export const t = {
   metaCancel: 'Annulla',
   openError: 'File non leggibile: ',
   solution: 'Soluzione',
+  personalWords: 'Parole mie',
+  personalWordsHint:
+    'Importa un file .txt con una parola per riga: si aggiungono al dizionario di questa macchina.',
+  personalWordsImported: (added: number, total: number) =>
+    `Importate ${added} parole nuove (totale personale: ${total}). Ricarico…`,
   confirmNew: 'Creare una nuova griglia? Il lavoro corrente viene sostituito.',
   restored: 'Lavoro precedente ripristinato.',
   storageUnavailable:

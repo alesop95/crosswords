@@ -32,6 +32,16 @@ export async function loadWordList(
   return { dict: WordList.fromText(text), text };
 }
 
+/** Normalizza una parola dell'utente alla convenzione della griglia. */
+export function normalizePersonalWord(raw: string): string | null {
+  const word = raw
+    .trim()
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toUpperCase();
+  return /^[A-Z]{2,21}$/.test(word) ? word : null;
+}
+
 const PERSONAL_KEY = 'crosswords:personal-words:v1';
 
 export function loadPersonalWords(): string[] {

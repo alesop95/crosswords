@@ -5,6 +5,7 @@ import { createPuzzle } from '../core/puzzle';
 import { setLetter } from '../core/grid';
 import type { FillerClient, FillHandle } from '../fill/fillerClient';
 import { parseIpuz, serializeIpuz } from '../io/ipuz';
+import { loadPersonalWords, normalizePersonalWord, savePersonalWords } from '../dict/loader';
 import { activeSlot } from './activeSlot';
 import { t } from './i18n';
 
@@ -39,7 +40,9 @@ export function mountToolbar(
       <button id="tb-save" type="button">${t.save}</button>
       <button id="tb-print" type="button">${t.print}</button>
       <button id="tb-meta" type="button">${t.metadata}</button>
+      <button id="tb-words" type="button" title="${t.personalWordsHint}">${t.personalWords}</button>
       <input id="tb-file" type="file" accept=".ipuz,application/json,.json" hidden />
+      <input id="tb-words-file" type="file" accept=".txt,text/plain" hidden />
     </div>
     <dialog id="tb-meta-dialog">
       <form method="dialog" class="meta-form">
@@ -191,6 +194,30 @@ export function mountToolbar(
   });
 
   printButton.addEventListener('click', onPrint);
+
+  const wordsButton = container.querySelector<HTMLButtonElement>('#tb-words')!;
+  const wordsInput = container.querySelector<HTMLInputElement>('#tb-words-file')!;
+  wordsButton.addEventListener('click', () => wordsInput.click());
+  wordsInput.addEventListener('change', async () => {
+    const file = wordsInput.files?.[0];
+    wordsInput.value = '';
+    if (!file) return;
+    const text = await file.text();
+    const existing = new Set(loadPersonalWords());
+    let added = 0;
+    for (const line of text.split(/\r?\n/)) {
+      const word = normalizePersonalWord(line.split(';')[0]);
+      if (word && !existing.has(word)) {
+        existing.add(word);
+        added++;
+      }
+    }
+    savePersonalWords([...existing].sort());
+    reportStatus(t.personalWordsImported(added, existing.size));
+    // il dizionario indicizzato e il worker vanno ricostruiti: il lavoro e'
+    // al sicuro nell'autosave, la ricarica e' la via piu' semplice e onesta
+    window.setTimeout(() => window.location.reload(), 800);
+  });
 
   metaButton.addEventListener('click', () => {
     const { meta } = store.getState().puzzle;

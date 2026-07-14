@@ -25,8 +25,8 @@ Data snapshot:        2026-07-03
 
 ## Punto di ripresa
 
-Milestone M0..M4 completate: editor griglia, wordlist (349.027 voci, nomi propri inclusi,
-apocopate escluse), filler CSP nel worker, definizioni con cestino orfane, ipuz round-trip,
-stampa A4 con soluzione. Commit di M2..M4 da eseguire (manuali, utente). Prossima milestone:
-M5, rifinitura v1: import lista parole personale, deploy GitHub Pages (base /crosswords/),
-README con screenshot.
+Versione 1 completa, milestone M0..M5 tutte chiuse: editor griglia, wordlist (349.027 voci),
+filler CSP nel worker, definizioni, ipuz, stampa, import parole personali, workflow di deploy
+su GitHub Pages e README. Azioni manuali pendenti dell'utente: commit e push di M2..M5,
+attivazione Pages (sorgente GitHub Actions) nelle impostazioni del repository, screenshot per
+il README in docs/img/app.png. Il seguito e' la roadmap v2.
