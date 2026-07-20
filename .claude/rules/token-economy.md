@@ -98,6 +98,21 @@ Il principio "un task, una chat" mantiene il contesto sempre fresco: invece di u
 che accumula task diversi, si chiude e riapre per ogni unita di lavoro logica, riducendo le
 compattazioni multiple e il rischio di deriva del focus.
 
+## Cautela sui workflow multi-agente costosi
+
+Alcuni workflow integrati (per esempio `deep-research`) fanno verificare ogni affermazione
+estratta da piu agenti indipendenti in parallelo: con qualche decina di affermazioni il numero di
+chiamate di verifica sale rapidamente a svariate decine, con un consumo di token che puo esaurire
+il limite di sessione in pochi secondi, prima ancora che il workflow completi la sintesi finale.
+Non e' un errore del workflow: e' il costo intrinseco della verifica adversariale a piu voti,
+esperienza gia osservata sul campo. Quando succede, non insistere rilanciando lo stesso workflow
+identico: o si restringe la domanda a un angolo di ricerca piu stretto per lancio, invece di
+chiedere tutto insieme, o si riprende con il meccanismo di resume del workflow (che rilegge dalla
+cache gli stadi gia completati e paga solo cio che manca), oppure si scende a una verifica manuale
+mirata delle sole fonti primarie gia trovate nella fase di ricerca, con una singola chiamata di
+recupero pagina per fonte invece del panel a piu voti: quest'ultima via e' quasi sempre la piu
+economica quando restano poche affermazioni da controllare.
+
 ## Strumenti esterni, a scelta
 
 Quando il risparmio nativo non basta, per esempio in sessioni operative molto lunghe e ricche di
