@@ -1,8 +1,6 @@
 # Snapshot di sincronizzazione
 
-> Da leggere per primo a inizio sessione. Fotografa lo stato del progetto al commit di
-> riferimento e mappa ogni scheda al suo stato di verifica. È la fonte di verità su cosa è fatto,
-> non le spunte del diario.
+> Da leggere per primo a inizio sessione. Fotografa lo stato del progetto al commit di riferimento e mappa ogni scheda al suo stato di verifica. È la fonte di verità su cosa è fatto, non le spunte del diario.
 
 ## Stato
 
@@ -25,7 +23,4 @@ Data snapshot:        2026-07-03
 
 ## Punto di ripresa
 
-Versione 1 completa e PUBBLICATA su https://alesop95.github.io/crosswords/ (commit 0829d6c
-pushato, Pages attivo con sorgente GitHub Actions, primo deploy riuscito). Nel working tree
-resta un ultimo commit da fare: README con screenshot (docs/img/app.png) e schede aggiornate.
-Il seguito e' la roadmap v2, dettagliata anche in _notes/RESUME-PROMPT.md.
+Versione 1 completa e PUBBLICATA su https://alesop95.github.io/crosswords/ (commit 0829d6c pushato, Pages attivo con sorgente GitHub Actions, primo deploy riuscito). Nel working tree resta un ultimo commit da fare: README con screenshot (docs/img/app.png) e schede aggiornate. Il seguito e' la roadmap v2, dettagliata anche in _notes/RESUME-PROMPT.md.

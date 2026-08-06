@@ -1,93 +1,27 @@
 # Registro delle decisioni architetturali
 
-> Convenzione ADR-lite, append-only. Ogni decisione architetturale non ovvia entra come voce
-> numerata con data, stato, contesto, decisione, motivazione e conseguenze. Una decisione non si
-> cancella e non si riscrive: quando viene superata, si aggiunge una nuova voce che dichiara di
-> superare la precedente e ne cita il numero. Le inferenze non confermate si marcano come da
-> verificare e si promuovono a decisione solo quando una fonte le conferma.
+> Convenzione ADR-lite, append-only. Ogni decisione architetturale non ovvia entra come voce numerata con data, stato, contesto, decisione, motivazione e conseguenze. Una decisione non si cancella e non si riscrive: quando viene superata, si aggiunge una nuova voce che dichiara di superare la precedente e ne cita il numero. Le inferenze non confermate si marcano come da verificare e si promuovono a decisione solo quando una fonte le conferma.
 
 ## ADR-001 — Adozione del sistema di progetto portabile
 
-Data: 2026-07-03
-Stato: accettata
-Contesto: il progetto necessita di uno stato interamente recuperabile da un clone e di
-documentazione che resti allineata al codice senza rilettura integrale a ogni sessione.
-Decisione: adottare il sistema descritto in `.claude/PROJECT-SYSTEM.md`, con motore di
-riconciliazione ancorato ai commit e doppio livello documentale tracciato/ignorato.
-Motivazione: persistenza strutturale su disco indipendente dalla sessione di chat, e controllo
-umano sul versionamento.
-Conseguenze: ogni passo significativo aggiorna schede, `last-verified-commit`, snapshot e
-work-log; commit e push restano manuali.
+Data: 2026-07-03 Stato: accettata Contesto: il progetto necessita di uno stato interamente recuperabile da un clone e di documentazione che resti allineata al codice senza rilettura integrale a ogni sessione. Decisione: adottare il sistema descritto in `.claude/PROJECT-SYSTEM.md`, con motore di riconciliazione ancorato ai commit e doppio livello documentale tracciato/ignorato. Motivazione: persistenza strutturale su disco indipendente dalla sessione di chat, e controllo umano sul versionamento. Conseguenze: ogni passo significativo aggiorna schede, `last-verified-commit`, snapshot e work-log; commit e push restano manuali.
 
 ## ADR-002 — Web app locale-first in TypeScript puro con Vite
 
-Data: 2026-07-03
-Stato: accettata
-Contesto: serviva scegliere la forma dell'applicazione di costruzione cruciverba tra web app
-locale, applicazione desktop e stack Python, e decidere se adottare un framework di interfaccia.
-Decisione: web app che gira interamente nel browser senza server, TypeScript puro con Vite come
-build tool, nessun framework di interfaccia, pubblicabile su GitHub Pages.
-Motivazione: il modello Exet dimostra che il caso d'uso non richiede server né framework; il
-componente centrale, la griglia SVG con gestione di cursore e tastiera, va comunque scritto in
-modo imperativo, e l'assenza di dipendenze runtime rende bundle, stampa e deploy prevedibili.
-Conseguenze: lo stato dell'interfaccia è disciplinato da un piccolo store con undo e redo; un
-eventuale framework resta adottabile in seguito perché la logica vive in moduli puri.
+Data: 2026-07-03 Stato: accettata Contesto: serviva scegliere la forma dell'applicazione di costruzione cruciverba tra web app locale, applicazione desktop e stack Python, e decidere se adottare un framework di interfaccia. Decisione: web app che gira interamente nel browser senza server, TypeScript puro con Vite come build tool, nessun framework di interfaccia, pubblicabile su GitHub Pages. Motivazione: il modello Exet dimostra che il caso d'uso non richiede server né framework; il componente centrale, la griglia SVG con gestione di cursore e tastiera, va comunque scritto in modo imperativo, e l'assenza di dipendenze runtime rende bundle, stampa e deploy prevedibili. Conseguenze: lo stato dell'interfaccia è disciplinato da un piccolo store con undo e redo; un eventuale framework resta adottabile in seguito perché la logica vive in moduli puri.
 
 ## ADR-003 — Filler CSP proprio in TypeScript dentro un Web Worker
 
-Data: 2026-07-03
-Stato: accettata
-Contesto: per il riempimento automatico erano in gara un motore proprio in TypeScript e
-ingrid_core, motore Rust con licenza MIT compilabile in WebAssembly.
-Decisione: implementare in proprio un risolutore CSP con backtracking, euristica MRV,
-propagazione delle lettere ammissibili e restart, eseguito in un Web Worker dietro un protocollo
-di messaggi esplicito.
-Motivazione: le griglie all'italiana, dense di caselle nere, generano sottoproblemi piccoli alla
-portata di un filler JavaScript; il calcolo delle lettere ammissibili per il feedback visivo va
-comunque fatto in TypeScript; si evita la toolchain Rust per uno sviluppatore singolo.
-Conseguenze: il protocollo del worker è il punto di sostituzione: se le prestazioni non
-bastassero, ingrid_core può subentrare dietro la stessa interfaccia senza toccare la UI.
+Data: 2026-07-03 Stato: accettata Contesto: per il riempimento automatico erano in gara un motore proprio in TypeScript e ingrid_core, motore Rust con licenza MIT compilabile in WebAssembly. Decisione: implementare in proprio un risolutore CSP con backtracking, euristica MRV, propagazione delle lettere ammissibili e restart, eseguito in un Web Worker dietro un protocollo di messaggi esplicito. Motivazione: le griglie all'italiana, dense di caselle nere, generano sottoproblemi piccoli alla portata di un filler JavaScript; il calcolo delle lettere ammissibili per il feedback visivo va comunque fatto in TypeScript; si evita la toolchain Rust per uno sviluppatore singolo. Conseguenze: il protocollo del worker è il punto di sostituzione: se le prestazioni non bastassero, ingrid_core può subentrare dietro la stessa interfaccia senza toccare la UI.
 
 ## ADR-004 — Cruciverba all'italiana come stile della prima versione
 
-Data: 2026-07-03
-Stato: accettata
-Contesto: le convenzioni italiane e americane divergono su simmetria, lunghezza minima delle
-parole e libertà nel posizionare le caselle nere.
-Decisione: la prima versione supporta lo schema all'italiana, con caselle nere libere, parole da
-due lettere in su, simmetria facoltativa, interfaccia in italiano.
-Motivazione: è il caso d'uso indicato dal materiale raccolto dall'utente; le griglie americane
-restano un'ipotesi per la versione due.
-Conseguenze: l'estrazione degli slot accetta lunghezza minima due e la validazione tratta la
-simmetria come opzione, non come vincolo.
+Data: 2026-07-03 Stato: accettata Contesto: le convenzioni italiane e americane divergono su simmetria, lunghezza minima delle parole e libertà nel posizionare le caselle nere. Decisione: la prima versione supporta lo schema all'italiana, con caselle nere libere, parole da due lettere in su, simmetria facoltativa, interfaccia in italiano. Motivazione: è il caso d'uso indicato dal materiale raccolto dall'utente; le griglie americane restano un'ipotesi per la versione due. Conseguenze: l'estrazione degli slot accetta lunghezza minima due e la validazione tratta la simmetria come opzione, non come vincolo.
 
 ## ADR-005 — Formato ipuz come unica serializzazione
 
-Data: 2026-07-03
-Stato: accettata
-Contesto: i formati candidati erano il binario .puz, l'XML jpz e il JSON aperto ipuz.
-Decisione: ipuz JSON versione 2, profilo crossword, è il formato nativo dei file e anche
-dell'autosalvataggio in localStorage; la scrittura usa un profilo bloccato con blocco "#" e la
-lettura è tollerante alle varianti della specifica; le impostazioni di progetto viaggiano in
-chiavi con namespace proprio.
-Motivazione: formato aperto, moderno e leggibile, con un solo percorso di serializzazione da
-testare in round-trip; .puz resta eventuale import/export della versione due.
-Conseguenze: ogni nuova proprietà del puzzle deve avere una rappresentazione ipuz e un test di
-round-trip.
+Data: 2026-07-03 Stato: accettata Contesto: i formati candidati erano il binario .puz, l'XML jpz e il JSON aperto ipuz. Decisione: ipuz JSON versione 2, profilo crossword, è il formato nativo dei file e anche dell'autosalvataggio in localStorage; la scrittura usa un profilo bloccato con blocco "#" e la lettura è tollerante alle varianti della specifica; le impostazioni di progetto viaggiano in chiavi con namespace proprio. Motivazione: formato aperto, moderno e leggibile, con un solo percorso di serializzazione da testare in round-trip; .puz resta eventuale import/export della versione due. Conseguenze: ogni nuova proprietà del puzzle deve avere una rappresentazione ipuz e un test di round-trip.
 
 ## ADR-006 — Wordlist italiana da Morph-it! con punteggi di frequenza ItWaC
 
-Data: 2026-07-03
-Stato: accettata
-Contesto: non esistono liste di parole italiane con punteggio pensate per i cruciverba,
-l'equivalente delle scored wordlist americane.
-Decisione: generare offline l'asset del dizionario con una pipeline Node in tools/wordlist che
-parte dalle forme flesse di Morph-it!, assegna punteggi dalla frequenza ItWaC, normalizza le
-voci alla convenzione dei cruciverba italiani, maiuscole senza accenti, scarta le voci non
-alfabetiche, integra una lista curata a mano di parole brevi e applica una blocklist; l'output è
-public/wordlists/it.txt.gz nel formato una riga per voce PAROLA;punteggio.
-Motivazione: Morph-it! è la fonte libera con la copertura di forme flesse più ampia e la
-frequenza d'uso è l'unico proxy disponibile per la qualità di una voce da cruciverba.
-Conseguenze: prima di committare l'asset va verificata la licenza dei dati sorgente, con
-attribuzione in un NOTICE separato; in caso ostile l'asset non si committa e si rigenera con npm
-run wordlist. Da verificare: l'esito del controllo licenze, primo passo della milestone M2.
+Data: 2026-07-03 Stato: accettata Contesto: non esistono liste di parole italiane con punteggio pensate per i cruciverba, l'equivalente delle scored wordlist americane. Decisione: generare offline l'asset del dizionario con una pipeline Node in tools/wordlist che parte dalle forme flesse di Morph-it!, assegna punteggi dalla frequenza ItWaC, normalizza le voci alla convenzione dei cruciverba italiani, maiuscole senza accenti, scarta le voci non alfabetiche, integra una lista curata a mano di parole brevi e applica una blocklist; l'output è public/wordlists/it.txt.gz nel formato una riga per voce PAROLA;punteggio. Motivazione: Morph-it! è la fonte libera con la copertura di forme flesse più ampia e la frequenza d'uso è l'unico proxy disponibile per la qualità di una voce da cruciverba. Conseguenze: prima di committare l'asset va verificata la licenza dei dati sorgente, con attribuzione in un NOTICE separato; in caso ostile l'asset non si committa e si rigenera con npm run wordlist. Da verificare: l'esito del controllo licenze, primo passo della milestone M2.
